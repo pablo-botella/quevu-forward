@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mkskill>
+  <project id="main" name="quevu-forward" project-type="Go-Module">
+    <meta>
+      <module>github.com/pablo-botella/quevu-forward</module>
+      <license>MIT</license>
+      <description>A proxy between queues for quevu, in Go: a forwarder (a persistent consumer of a hub that guarantees its own queue on disk and sends small packets) and a receiver (a component mountable on any HTTP mux that feeds what arrives into hubs). Component level only: the transport, its protection and authentication are not decided here. Use when working with github.com/pablo-botella/quevu-forward (package qforward) or when a log has to reach a hub on another machine.</description>
+    </meta>
+  </project>
+</mkskill>
