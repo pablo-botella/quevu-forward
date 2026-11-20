@@ -6,12 +6,12 @@
 // It is two components, one at each end ("forwarder" and "receiver" are
 // working names):
 //
-//   - Forwarder is a persistent consumer of a hub. It guarantees its own
+//   - Forwarder is a persistent writer of a hub. It guarantees its own
 //     queue: what could not be sent yet is kept on disk, so it survives
 //     the other end being down and the application being restarted. It
 //     sends in small packets.
 //   - Receiver takes those packets at the other end and feeds them into
-//     the flow there: a hub and its consumers.
+//     the flow there: a hub and its writers.
 //
 // What carries a packet from one to the other is a Transport, and it is
 // not here. This package is the two components and nothing of the road

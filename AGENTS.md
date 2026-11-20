@@ -3,7 +3,7 @@
 Go package `github.com/pablo-botella/quevu-forward`, imported as
 `qforward`. Two components and the interface between them:
 
-- `Forwarder`: a `quevu.Consumer` and `quevu.SeqConsumer` with a queue on
+- `Forwarder`: a `quevu.Writer` and `quevu.SeqWriter` with a queue on
   disk (kept with `quevu-txt`).
 - `Receiver`: `Accept(from, Packet)`, and an `http.Handler`.
 - `Transport`: what carries a `Packet` and brings back the confirmation.
@@ -17,7 +17,7 @@ owns no server, no mux and no routes: those are the hosting application's.
 
 ## The two ends
 
-**Forwarder**, where the log is produced. It is a persistent consumer of a
+**Forwarder**, where the log is produced. It is a persistent writer of a
 hub, and it guarantees its own queue:
 
 - Taking a batch is writing it to disk. When `Write` returns, the batch
@@ -37,7 +37,7 @@ into hubs:
   answers. Returning an error refuses the packet; the sender keeps it.
 - A chunk is confirmed only once a hub has accepted it.
 - A chunk keeps the time it had at its origin (if the hub is a
-  `quevu.TimedIntake`, as `qhub.Hub` is). Its position is the next one of
+  `quevu.TimedIntake`, as a `quevu.Inlet` is). Its position is the next one of
   the hub it joins.
 
 ## At least once

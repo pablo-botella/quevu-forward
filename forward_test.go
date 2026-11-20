@@ -28,17 +28,17 @@ type hub struct {
 
 func (h *hub) Write(p []byte) (int, error) { return len(p), nil }
 
-func (h *hub) Append(data []byte) (uint64, error) { return h.AppendAt(data, time.Now()) }
+func (h *hub) Append(data []byte) error { return h.AppendAt(data, time.Now()) }
 
-func (h *hub) AppendAt(data []byte, at time.Time) (uint64, error) {
+func (h *hub) AppendAt(data []byte, at time.Time) error {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 	if h.refuse != "" && string(data) == h.refuse {
-		return 0, errors.New("hub closed")
+		return errors.New("hub closed")
 	}
 	h.got = append(h.got, string(data))
 	h.times = append(h.times, at)
-	return uint64(len(h.got)), nil
+	return nil
 }
 
 func (h *hub) all() []string {

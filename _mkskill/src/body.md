@@ -6,7 +6,7 @@ mkskill:
 
 ## The two ends
 
-**Forwarder**, where the log is produced. It is a persistent consumer of a
+**Forwarder**, where the log is produced. It is a persistent writer of a
 hub, and it guarantees its own queue:
 
 - Taking a batch is writing it to disk. When `Write` returns, the batch
@@ -26,7 +26,7 @@ into hubs:
   answers. Returning an error refuses the packet; the sender keeps it.
 - A chunk is confirmed only once a hub has accepted it.
 - A chunk keeps the time it had at its origin (if the hub is a
-  `quevu.TimedIntake`, as `qhub.Hub` is). Its position is the next one of
+  `quevu.TimedIntake`, as a `quevu.Inlet` is). Its position is the next one of
   the hub it joins.
 
 ## At least once

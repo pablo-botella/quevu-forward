@@ -103,9 +103,9 @@ func (r *Receiver) Accept(from string, p Packet) (confirmed uint64, err error) {
 		// The chunk keeps the time it had at its origin when the hub can
 		// be told; its position is the next one of the hub it joins.
 		if timed != nil {
-			_, err = timed.AppendAt(c.Data, c.Time)
+			err = timed.AppendAt(c.Data, c.Time)
 		} else {
-			_, err = into.Append(c.Data)
+			err = into.Append(c.Data)
 		}
 		if err != nil {
 			err = fmt.Errorf("qforward: the hub did not take position %d of log %q of %q: %w", c.Seq, p.Log, from, err)

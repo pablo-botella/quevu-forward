@@ -36,7 +36,7 @@ type Config struct {
 	TrimAt int64
 }
 
-// Forwarder is a persistent consumer of a hub that delivers what it
+// Forwarder is a persistent writer of a hub that delivers what it
 // receives to a hub somewhere else.
 //
 // It takes a batch by writing it to its queue on disk, and that is all
@@ -44,6 +44,8 @@ type Config struct {
 // hub back. Sending happens in the background, in order, and a chunk
 // leaves the queue only when the other end has confirmed it.
 type Forwarder struct {
+	fails quevu.Failures // the body of Run, and what it could not write
+
 	cfg   Config
 	spool *spool
 
@@ -222,6 +224,15 @@ func (f *Forwarder) sleep(ctx context.Context, d time.Duration) {
 }
 
 var (
-	_ quevu.Consumer    = (*Forwarder)(nil)
-	_ quevu.SeqConsumer = (*Forwarder)(nil)
+	_ quevu.Writer    = (*Forwarder)(nil)
+	_ quevu.SeqWriter = (*Forwarder)(nil)
 )
+
+// Run receives from the channel the hub gave this writer until it is
+// closed, writing what arrives in batches, and closes the writer at the
+// end. It is what makes it a quevu.Writer.
+func (f *Forwarder) Run(in <-chan quevu.Chunk) error { return f.fails.Drain(in, 0, f) }
+
+// Failed returns the chunks lost so far in failed batches, and the last
+// error.
+func (f *Forwarder) Failed() (uint64, error) { return f.fails.Failed() }
