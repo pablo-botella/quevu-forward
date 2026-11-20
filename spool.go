@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/pablo-botella/quevu"
+	quevu "github.com/pablo-botella/quevu-kernel"
 	qtxt "github.com/pablo-botella/quevu-txt"
 )
 

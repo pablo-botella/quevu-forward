@@ -8,7 +8,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/pablo-botella/quevu"
+	quevu "github.com/pablo-botella/quevu-kernel"
 )
 
 // ReceiverConfig sets up a Receiver.

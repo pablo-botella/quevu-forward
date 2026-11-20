@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/pablo-botella/quevu"
+	quevu "github.com/pablo-botella/quevu-kernel"
 )
 
 // The receiver does not own a web server. It is a component that is
