@@ -9,14 +9,14 @@ import (
 	"sync"
 
 	"github.com/pablo-botella/quevu"
-	qtxt "github.com/pablo-botella/quevu-txt"
+	"github.com/pablo-botella/quevu/qtxt"
 )
 
 // spool is the queue a forwarder guarantees: every chunk it has taken
 // and not yet seen confirmed, on disk.
 //
 // It is two files. The chunks wait in a text file, written and read with
-// quevu-txt, the same way a log is kept in a file anywhere else in quevu.
+// quevu/qtxt, the same way a log is kept in a file anywhere else in quevu.
 // Next to it a small file holds one number: the position up to which the
 // other end has confirmed. What lies after that number is what is still
 // to be sent; it is all that has to survive a restart.
