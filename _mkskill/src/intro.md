@@ -24,7 +24,7 @@ fwd, _ := qforward.Open(qforward.Config{
 	Spool:     "errors.queue", // its queue, on disk
 	Transport: qforward.HTTP("https://example.com/logs/in", "shop-1", nil),
 })
-errors, _ := qhub.New("errors", qhub.WithWriter(fwd))
+errors, _ := quevu.NewQHub("errors", quevu.WithWriter(fwd))
 ```
 
 On the server, in whatever web server the application already has:
