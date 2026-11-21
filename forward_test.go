@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	quevu "github.com/pablo-botella/quevu-kernel"
+	"github.com/pablo-botella/quevu"
 )
 
 // hub stands for a hub at the receiving end: it keeps what it accepts,

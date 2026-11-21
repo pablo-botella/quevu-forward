@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	quevu "github.com/pablo-botella/quevu-kernel"
+	"github.com/pablo-botella/quevu"
 )
 
 // Config sets up a Forwarder.

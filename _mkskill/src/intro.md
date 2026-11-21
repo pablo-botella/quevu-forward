@@ -6,7 +6,7 @@ mkskill:
 
 # quevu-forward
 
-A proxy between queues for [quevu](https://github.com/pablo-botella/quevu-kernel):
+A proxy between queues for [quevu](https://github.com/pablo-botella/quevu):
 it attends a queue here and delivers it to a hub somewhere else. For
 instance, the log of programming errors of an application, forwarded to a
 server where the programmers can use it.

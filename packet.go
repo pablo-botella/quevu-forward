@@ -27,7 +27,7 @@ package qforward
 import (
 	"context"
 
-	quevu "github.com/pablo-botella/quevu-kernel"
+	"github.com/pablo-botella/quevu"
 )
 
 // Packet is a small stretch of one log on its way to the other end:
