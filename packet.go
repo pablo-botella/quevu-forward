@@ -27,7 +27,7 @@ package qforward
 import (
 	"context"
 
-	"github.com/pablo-botella/quevu"
+	"github.com/pablo-botella/quevu/qkernel"
 )
 
 // Packet is a small stretch of one log on its way to the other end:
@@ -37,7 +37,7 @@ type Packet struct {
 	// Log is the name of the log the chunks belong to.
 	Log string
 	// Chunks are in ascending order of position.
-	Chunks []quevu.Chunk
+	Chunks []qkernel.Chunk
 }
 
 // Last returns the position of the last chunk of the packet, or zero.

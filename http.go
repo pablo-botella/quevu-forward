@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/pablo-botella/quevu"
+	"github.com/pablo-botella/quevu/qkernel"
 )
 
 // The receiver does not own a web server. It is a component that is
@@ -81,9 +81,9 @@ func (r *Receiver) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
-	p := Packet{Log: wp.Log, Chunks: make([]quevu.Chunk, len(wp.Chunks))}
+	p := Packet{Log: wp.Log, Chunks: make([]qkernel.Chunk, len(wp.Chunks))}
 	for i, c := range wp.Chunks {
-		p.Chunks[i] = quevu.Chunk{Seq: c.S, Time: time.Unix(0, c.T), Data: c.D}
+		p.Chunks[i] = qkernel.Chunk{Seq: c.S, Time: time.Unix(0, c.T), Data: c.D}
 	}
 	confirmed, err := r.Accept(from, p)
 	ans := wireAnswer{Confirmed: confirmed}

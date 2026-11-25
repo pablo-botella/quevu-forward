@@ -3,7 +3,7 @@
 Go package `github.com/pablo-botella/quevu-forward`, imported as
 `qforward`. Two components and the interface between them:
 
-- `Forwarder`: a `quevu.Writer` and `quevu.SeqWriter` with a queue on
+- `Forwarder`: a `qkernel.Writer` and `qkernel.SeqWriter` with a queue on
   disk (kept with `quevu/qtxt`).
 - `Receiver`: `Accept(from, Packet)`, and an `http.Handler`.
 - `Transport`: what carries a `Packet` and brings back the confirmation.
@@ -37,7 +37,7 @@ into hubs:
   answers. Returning an error refuses the packet; the sender keeps it.
 - A chunk is confirmed only once a hub has accepted it.
 - A chunk keeps the time it had at its origin (if the hub is a
-  `quevu.TimedIntake`, as a `quevu.Inlet` is). Its position is the next one of
+  `qkernel.TimedIntake`, as a `qkernel.Inlet` is). Its position is the next one of
   the hub it joins.
 
 ## At least once

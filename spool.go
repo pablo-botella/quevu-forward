@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/pablo-botella/quevu"
+	"github.com/pablo-botella/quevu/qkernel"
 	"github.com/pablo-botella/quevu/qtxt"
 )
 
@@ -67,7 +67,7 @@ func (s *spool) open() error {
 
 // write takes a batch. When it returns without error the batch is on
 // disk.
-func (s *spool) write(batch []quevu.Chunk) error {
+func (s *spool) write(batch []qkernel.Chunk) error {
 	if len(batch) == 0 {
 		return nil
 	}
@@ -84,7 +84,7 @@ func (s *spool) write(batch []quevu.Chunk) error {
 }
 
 // next returns up to n chunks that are still to be sent.
-func (s *spool) next(n int) ([]quevu.Chunk, error) {
+func (s *spool) next(n int) ([]qkernel.Chunk, error) {
 	s.mu.Lock()
 	from := s.confirmed
 	s.mu.Unlock()

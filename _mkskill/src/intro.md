@@ -24,14 +24,14 @@ fwd, _ := qforward.Open(qforward.Config{
 	Spool:     "errors.queue", // its queue, on disk
 	Transport: qforward.HTTP("https://example.com/logs/in", "shop-1", nil),
 })
-errors, _ := quevu.NewQHub("errors", quevu.WithWriter(fwd))
+errors, _ := qkernel.NewQHub("errors", qkernel.WithWriter(fwd))
 ```
 
 On the server, in whatever web server the application already has:
 
 ```go
 rcv, _ := qforward.NewReceiver(qforward.ReceiverConfig{
-	Into:  func(from, log string) (quevu.Intake, error) { return inletFor(from, log), nil },
+	Into:  func(from, log string) (qkernel.Intake, error) { return inletFor(from, log), nil },
 	State: "receiver.state",
 })
 mux.Handle("/logs/in", rcv) // whatever comes in through this URL

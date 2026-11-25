@@ -8,7 +8,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/pablo-botella/quevu"
+	"github.com/pablo-botella/quevu/qkernel"
 )
 
 // ReceiverConfig sets up a Receiver.
@@ -20,7 +20,7 @@ type ReceiverConfig struct {
 	//
 	// It is what keeps logs apart: two senders, or two logs of one
 	// sender, are two different answers.
-	Into func(from, log string) (quevu.Intake, error)
+	Into func(from, log string) (qkernel.Intake, error)
 	// State is the path of the file where the receiver remembers how far
 	// it has taken each log, so that a packet that arrives again after a
 	// restart is recognized. Empty: it remembers only while it runs.
@@ -94,7 +94,7 @@ func (r *Receiver) Accept(from string, p Packet) (confirmed uint64, err error) {
 	if into == nil {
 		return confirmed, fmt.Errorf("qforward: no place for log %q of %q", p.Log, from)
 	}
-	timed, _ := into.(quevu.TimedIntake)
+	timed, _ := into.(qkernel.TimedIntake)
 	for _, c := range p.Chunks {
 		if c.Seq <= confirmed {
 			// Seen before: this packet, or part of it, came twice.

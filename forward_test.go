@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pablo-botella/quevu"
+	"github.com/pablo-botella/quevu/qkernel"
 )
 
 // hub stands for a hub at the receiving end: it keeps what it accepts,
@@ -99,10 +99,10 @@ func (rd *road) sizes() []int {
 	return out
 }
 
-func chunks(from, to uint64) []quevu.Chunk {
-	var out []quevu.Chunk
+func chunks(from, to uint64) []qkernel.Chunk {
+	var out []qkernel.Chunk
 	for s := from; s <= to; s++ {
-		out = append(out, quevu.Chunk{Seq: s, Time: time.Unix(1700000000, int64(s)), Data: fmt.Appendf(nil, "l%d", s)})
+		out = append(out, qkernel.Chunk{Seq: s, Time: time.Unix(1700000000, int64(s)), Data: fmt.Appendf(nil, "l%d", s)})
 	}
 	return out
 }
@@ -130,7 +130,7 @@ func ends(t *testing.T) (*hub, *Receiver, *road, string) {
 	dir := t.TempDir()
 	h := &hub{}
 	r, err := NewReceiver(ReceiverConfig{
-		Into:  func(from, log string) (quevu.Intake, error) { return h, nil },
+		Into:  func(from, log string) (qkernel.Intake, error) { return h, nil },
 		State: filepath.Join(dir, "receiver.state"),
 	})
 	if err != nil {
@@ -199,12 +199,12 @@ func TestAPacketIsBoundedInBytesToo(t *testing.T) {
 	defer f.Close()
 	rd.set(true)
 	big := strings.Repeat("x", 400)
-	var batch []quevu.Chunk
+	var batch []qkernel.Chunk
 	for s := uint64(1); s <= 5; s++ {
-		batch = append(batch, quevu.Chunk{Seq: s, Time: time.Now(), Data: []byte(big)})
+		batch = append(batch, qkernel.Chunk{Seq: s, Time: time.Now(), Data: []byte(big)})
 	}
 	// And one that is too large for any packet: it travels alone.
-	batch = append(batch, quevu.Chunk{Seq: 6, Time: time.Now(), Data: []byte(strings.Repeat("y", 5000))})
+	batch = append(batch, qkernel.Chunk{Seq: 6, Time: time.Now(), Data: []byte(strings.Repeat("y", 5000))})
 	f.Write(batch)
 	rd.mu.Lock()
 	rd.packets = nil
@@ -297,7 +297,7 @@ func TestTheReceiverRemembersAcrossARestart(t *testing.T) {
 	r.Close()
 	// The server restarts, and the same packet comes again.
 	r2, err := NewReceiver(ReceiverConfig{
-		Into:  func(string, string) (quevu.Intake, error) { return h, nil },
+		Into:  func(string, string) (qkernel.Intake, error) { return h, nil },
 		State: filepath.Join(dir, "receiver.state"),
 	})
 	if err != nil {
@@ -318,7 +318,7 @@ func TestTheReceiverRemembersAcrossARestart(t *testing.T) {
 func TestSeveralSendersAndLogsAreKeptApart(t *testing.T) {
 	hubs := map[string]*hub{}
 	var mu sync.Mutex
-	r, _ := NewReceiver(ReceiverConfig{Into: func(from, log string) (quevu.Intake, error) {
+	r, _ := NewReceiver(ReceiverConfig{Into: func(from, log string) (qkernel.Intake, error) {
 		if from == "stranger" {
 			return nil, errors.New("not expected here")
 		}
@@ -396,7 +396,7 @@ func TestTheQueueFileDoesNotGrowForEver(t *testing.T) {
 
 func TestMountedOnAMuxOfTheHostingApplication(t *testing.T) {
 	h := &hub{}
-	r, _ := NewReceiver(ReceiverConfig{Into: func(from, log string) (quevu.Intake, error) {
+	r, _ := NewReceiver(ReceiverConfig{Into: func(from, log string) (qkernel.Intake, error) {
 		if log != "errors" {
 			return nil, errors.New("no such log here")
 		}
@@ -444,7 +444,7 @@ func TestTheHostingApplicationSaysWhoIsCalling(t *testing.T) {
 	h := &hub{}
 	var seen []string
 	r, _ := NewReceiver(ReceiverConfig{
-		Into: func(from, log string) (quevu.Intake, error) { seen = append(seen, from); return h, nil },
+		Into: func(from, log string) (qkernel.Intake, error) { seen = append(seen, from); return h, nil },
 		// However the application authenticated the request, it is the
 		// one that knows. Here: a header a proxy in front would set.
 		Sender: func(req *http.Request) (string, error) {

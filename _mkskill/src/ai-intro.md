@@ -9,7 +9,7 @@ mkskill:
 Go package `github.com/pablo-botella/quevu-forward`, imported as
 `qforward`. Two components and the interface between them:
 
-- `Forwarder`: a `quevu.Writer` and `quevu.SeqWriter` with a queue on
+- `Forwarder`: a `qkernel.Writer` and `qkernel.SeqWriter` with a queue on
   disk (kept with `quevu/qtxt`).
 - `Receiver`: `Accept(from, Packet)`, and an `http.Handler`.
 - `Transport`: what carries a `Packet` and brings back the confirmation.

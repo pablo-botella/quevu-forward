@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/pablo-botella/quevu"
+	"github.com/pablo-botella/quevu/qkernel"
 )
 
 // Config sets up a Forwarder.
@@ -44,7 +44,7 @@ type Config struct {
 // hub back. Sending happens in the background, in order, and a chunk
 // leaves the queue only when the other end has confirmed it.
 type Forwarder struct {
-	fails quevu.Failures // the body of Run, and what it could not write
+	fails qkernel.Failures // the body of Run, and what it could not write
 
 	cfg   Config
 	spool *spool
@@ -98,7 +98,7 @@ func Open(cfg Config) (*Forwarder, error) {
 
 // Write takes a batch into the queue. When it returns without error the
 // batch is on disk and will be delivered, now or after a restart.
-func (f *Forwarder) Write(batch []quevu.Chunk) error {
+func (f *Forwarder) Write(batch []qkernel.Chunk) error {
 	if err := f.spool.write(batch); err != nil {
 		return err
 	}
@@ -224,14 +224,14 @@ func (f *Forwarder) sleep(ctx context.Context, d time.Duration) {
 }
 
 var (
-	_ quevu.Writer    = (*Forwarder)(nil)
-	_ quevu.SeqWriter = (*Forwarder)(nil)
+	_ qkernel.Writer    = (*Forwarder)(nil)
+	_ qkernel.SeqWriter = (*Forwarder)(nil)
 )
 
 // Run receives from the channel the hub gave this writer until it is
 // closed, writing what arrives in batches, and closes the writer at the
-// end. It is what makes it a quevu.Writer.
-func (f *Forwarder) Run(in <-chan quevu.Chunk) error { return f.fails.Drain(in, 0, f) }
+// end. It is what makes it a qkernel.Writer.
+func (f *Forwarder) Run(in <-chan qkernel.Chunk) error { return f.fails.Drain(in, 0, f) }
 
 // Failed returns the chunks lost so far in failed batches, and the last
 // error.

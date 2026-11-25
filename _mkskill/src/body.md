@@ -26,7 +26,7 @@ into hubs:
   answers. Returning an error refuses the packet; the sender keeps it.
 - A chunk is confirmed only once a hub has accepted it.
 - A chunk keeps the time it had at its origin (if the hub is a
-  `quevu.TimedIntake`, as a `quevu.Inlet` is). Its position is the next one of
+  `qkernel.TimedIntake`, as a `qkernel.Inlet` is). Its position is the next one of
   the hub it joins.
 
 ## At least once
